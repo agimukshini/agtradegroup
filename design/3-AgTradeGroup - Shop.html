@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        window.FontAwesomeConfig = {
+          autoReplaceSvg: 'nest'
+        };
+      </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - AgTradeGroup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#1E3A5F',
+                            dark: '#152943',
+                            orange: '#F97316',
+                            orangeHover: '#EA580C',
+                            bg: '#F8FAFC',
+                            surface: '#FFFFFF',
+                            text: '#0F172A',
+                            muted: '#64748B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { margin: 0; padding: 0; background-color: #F8FAFC; }
+        .product-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Custom Checkbox */
+        .custom-checkbox {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.15em;
+            display: grid;
+            place-content: center;
+        }
+        .custom-checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em #1E3A5F;
+            background-color: #1E3A5F;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .custom-checkbox:checked::before {
+            transform: scale(1);
+        }
+        .custom-checkbox:checked {
+            border-color: #1E3A5F;
+        }
+        /* Bottom Sheet Mobile */
+        .bottom-sheet {
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .bottom-sheet.open {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="font-sans text-brand-text bg-brand-bg min-h-screen flex flex-col m-0 p-0">
+
+    <!-- Header (Consistent Shell) -->
+    <header id="header" class="bg-brand-navy text-white sticky top-0 z-50 shadow-md">
+        <!-- Top Bar -->
+        <div class="bg-brand-dark text-xs py-2 px-4 hidden md:block">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex gap-6">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-truck text-brand-orange"></i> Free Delivery in Ferizaj</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-phone text-brand-orange"></i> +383 44 123 456</span>
+                </div>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-brand-orange transition-colors">Support</a>
+                    <a href="#" class="hover:text-brand-orange transition-colors">Track Order</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Nav -->
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center gap-8">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2 flex-shrink-0">
+                    <div class="w-10 h-10 bg-brand-orange rounded-lg flex items-center justify-center font-bold text-xl">
+                        AG
+                    </div>
+                    <div>
+                        <div class="font-bold text-xl leading-tight tracking-tight">AgTradeGroup</div>
+                        <div class="text-[10px] text-gray-300 uppercase tracking-wider hidden sm:block">Plumbing & Construction</div>
+                    </div>
+                </a>
+
+                <!-- Desktop Search -->
+                <div class="hidden md:flex flex-1 max-w-2xl relative">
+                    <input type="text" placeholder="Search products, tools, materials..." 
+                           class="w-full h-11 pl-4 pr-12 rounded-lg text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-orange border-none bg-white">
+                    <button class="absolute right-0 top-0 h-11 w-12 text-brand-navy hover:text-brand-orange flex items-center justify-center rounded-r-lg">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Icons -->
+                <div class="flex items-center gap-5 sm:gap-6">
+                    <a href="#" class="flex flex-col items-center gap-1 hover:text-brand-orange transition-colors relative">
+                        <i class="fa-solid fa-house text-xl"></i>
+                        <span class="text-xs hidden sm:block font-medium">Home</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center gap-1 text-brand-orange transition-colors relative">
+                        <i class="fa-solid fa-store text-xl"></i>
+                        <span class="text-xs hidden sm:block font-medium">Shop</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center gap-1 hover:text-brand-orange transition-colors relative">
+                        <i class="fa-regular fa-user text-xl"></i>
+                        <span class="text-xs hidden sm:block font-medium">Account</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center gap-1 hover:text-brand-orange transition-colors relative">
+                        <div class="relative">
+                            <i class="fa-solid fa-cart-shopping text-xl"></i>
+                            <span class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                        </div>
+                        <span class="text-xs hidden sm:block font-medium">Cart</span>
+                    </a>
+                    <button class="md:hidden text-2xl hover:text-brand-orange">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="bg-white text-brand-text border-b border-gray-200 hidden md:block">
+            <div class="max-w-7xl mx-auto px-4">
+                <nav class="flex space-x-8">
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange flex items-center gap-2 border-b-2 border-transparent">
+                        <i class="fa-solid fa-bars"></i> All Categories
+                    </a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Plumbing</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Heating</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Tools</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Building Materials</a>
+                    <a href="#" class="py-3 text-sm font-medium text-red-600 hover:text-red-700 border-b-2 border-transparent ml-auto flex items-center gap-1">
+                        <i class="fa-solid fa-tag"></i> Offers
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Mobile Search (Visible only on mobile) -->
+        <div class="md:hidden p-3 bg-brand-navy border-t border-brand-dark">
+             <div class="relative w-full">
+                <input type="text" placeholder="Search products..." 
+                       class="w-full h-10 pl-4 pr-10 rounded-lg text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-orange border-none bg-white text-sm">
+                <button class="absolute right-0 top-0 h-10 w-10 text-brand-navy flex items-center justify-center rounded-r-lg">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full pb-20 md:pb-12">
+        
+        <!-- Breadcrumbs & Page Header -->
+        <div class="bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 py-4 md:py-6">
+                <nav class="flex text-sm text-brand-muted mb-4" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                        <li class="inline-flex items-center">
+                            <a href="#" class="hover:text-brand-orange flex items-center gap-1">
+                                <i class="fa-solid fa-house text-xs"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <i class="fa-solid fa-chevron-right text-[10px] mx-1"></i>
+                                <span class="text-brand-navy font-medium ml-1 md:ml-2">Shop All</span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-brand-navy">Professional Tools & Materials</h1>
+                        <p class="text-sm text-brand-muted mt-1">Showing 1-24 of 1,248 products</p>
+                    </div>
+                    
+                    <!-- Sorting & Mobile Filter Trigger -->
+                    <div class="flex items-center gap-3">
+                        <button id="mobile-filter-btn" class="md:hidden flex-1 bg-white border border-gray-300 text-brand-text font-medium py-2.5 px-4 rounded-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-sliders"></i> Filters
+                        </button>
+                        
+                        <div class="relative flex-1 md:flex-none">
+                            <select class="w-full md:w-48 appearance-none bg-white border border-gray-300 text-brand-text font-medium py-2.5 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange text-sm cursor-pointer">
+                                <option>Most Popular</option>
+                                <option>Price: Low to High</option>
+                                <option>Price: High to Low</option>
+                                <option>Newest Arrivals</option>
+                                <option>Highest Rated</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-brand-muted">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
+            
+            <!-- Desktop Sidebar Filters -->
+            <aside class="hidden md:block w-64 flex-shrink-0 space-y-6">
+                <!-- Active Filters -->
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-brand-navy">Active Filters</h3>
+                        <button class="text-xs text-brand-orange hover:text-brand-orangeHover font-medium">Clear All</button>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-brand-bg border border-gray-200 text-xs font-medium text-brand-text">
+                            Power Tools
+                            <button class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-brand-bg border border-gray-200 text-xs font-medium text-brand-text">
+                            In Stock
+                            <button class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="border-t border-gray-200 pt-5">
+                    <h3 class="font-bold text-brand-navy mb-4">Categories</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Plumbing Supplies <span class="text-gray-400 text-xs ml-1">(342)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Heating Systems <span class="text-gray-400 text-xs ml-1">(128)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox" checked>
+                                <span class="text-brand-text font-medium group-hover:text-brand-orange transition-colors">Power Tools <span class="text-gray-400 text-xs ml-1">(56)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Hand Tools <span class="text-gray-400 text-xs ml-1">(215)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Building Materials <span class="text-gray-400 text-xs ml-1">(489)</span></span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Price Range -->
+                <div class="border-t border-gray-200 pt-5">
+                    <h3 class="font-bold text-brand-navy mb-4">Price Range</h3>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="relative flex-1">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">€</span>
+                            <input type="number" placeholder="Min" class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange">
+                        </div>
+                        <span class="text-gray-400">-</span>
+                        <div class="relative flex-1">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">€</span>
+                            <input type="number" placeholder="Max" class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange">
+                        </div>
+                    </div>
+                    <button class="w-full bg-brand-bg border border-gray-300 text-brand-navy hover:bg-gray-50 text-sm font-medium py-2 rounded-lg transition-colors">
+                        Apply Range
+                    </button>
+                </div>
+
+                <!-- Availability -->
+                <div class="border-t border-gray-200 pt-5">
+                    <h3 class="font-bold text-brand-navy mb-4">Availability</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox" checked>
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">In Stock <span class="text-gray-400 text-xs ml-1">(1,102)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Out of Stock <span class="text-gray-400 text-xs ml-1">(146)</span></span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Brands -->
+                <div class="border-t border-gray-200 pt-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-brand-navy">Brands</h3>
+                        <button class="text-xs text-brand-orange hover:text-brand-orangeHover font-medium"><i class="fa-solid fa-search"></i></button>
+                    </div>
+                    <ul class="space-y-3 text-sm max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">DeWalt <span class="text-gray-400 text-xs ml-1">(45)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Makita <span class="text-gray-400 text-xs ml-1">(38)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Bosch <span class="text-gray-400 text-xs ml-1">(52)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Milwaukee <span class="text-gray-400 text-xs ml-1">(24)</span></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox">
+                                <span class="text-brand-text group-hover:text-brand-orange transition-colors">Stanley <span class="text-gray-400 text-xs ml-1">(89)</span></span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Product Grid Area -->
+            <div class="flex-1">
+                
+                <!-- Applied Filters Mobile Chips (Visible only on mobile if filters active) -->
+                <div class="md:hidden flex flex-wrap gap-2 mb-4">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-bg border border-gray-200 text-xs font-medium text-brand-text">
+                        Power Tools
+                        <button class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-bg border border-gray-200 text-xs font-medium text-brand-text">
+                        In Stock
+                        <button class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                    </span>
+                </div>
+
+                <!-- Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                    
+                    <!-- Product Card 1 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded z-10">-15%</span>
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/beb7796f8e-ed48e95a7269f7716622.png" alt="Professional heavy duty yellow and black combi drill, sharp lighting, clean background" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-1">
+                                <div class="text-xs text-brand-muted">SKU: DW-18V-BD</div>
+                            </div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">Pro-Grade 18V Brushless Combi Drill Set</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400 text-[10px]">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                                    </div>
+                                    <span class="text-[10px] text-brand-muted">(42)</span>
+                                </div>
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€149.99</span>
+                                    <span class="text-xs text-gray-400 line-through mb-1">€176.45</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cart-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 2 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 left-2 bg-brand-orange text-white text-[10px] font-bold px-2 py-1 rounded z-10">Bestseller</span>
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c62181d3ea-9a17b345af515bacb34d.png" alt="High quality copper plumbing pipes bundle, professional industrial look" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-1">
+                                <div class="text-xs text-brand-muted">SKU: CP-15MM-3M</div>
+                            </div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">Copper Pipe 15mm x 3m (Pack of 10)</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400 text-[10px]">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <span class="text-[10px] text-brand-muted">(128)</span>
+                                </div>
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€84.50</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cart-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 3 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 right-2 text-red-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="Low Stock">
+                                <i class="fa-solid fa-exclamation-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/f744ea47ed-9ada45bb39d3da565020.png" alt="Modern compact boiler heating system unit, professional HVAC equipment" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-1">
+                                <div class="text-xs text-brand-muted">SKU: HT-CB-24KW</div>
+                            </div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">High Efficiency Combi Boiler 24kW</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400 text-[10px]">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                                    </div>
+                                    <span class="text-[10px] text-brand-muted">(15)</span>
+                                </div>
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€895.00</span>
+                                </div>
+                                <button class="w-full bg-white border border-brand-navy text-brand-navy hover:bg-gray-50 text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 4 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 left-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded z-10">New</span>
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c9c6123112-61f89cf32ec6574692f5.png" alt="Professional laser level tool on tripod, construction measuring tool" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-1">
+                                <div class="text-xs text-brand-muted">SKU: MT-LL-360</div>
+                            </div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">360° Cross Line Laser Level with Tripod</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400 text-[10px]">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <span class="text-[10px] text-brand-muted">(8)</span>
+                                </div>
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€129.99</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cart-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 5 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/bc6a06b265-b1277bb39d689e72e7b0.png" alt="Heavy duty angle grinder power tool, industrial grade" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-1">
+                                <div class="text-xs text-brand-muted">SKU: PT-AG-115</div>
+                            </div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">115mm Professional Angle Grinder 900W</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400 text-[10px]">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                                    </div>
+                                    <span class="text-[10px] text-brand-muted">(67)</span>
+                                </div>
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€54.90</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cart-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 6 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col opacity-75">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <div class="absolute inset-0 bg-white/40 z-10 flex items-center justify-center">
+                                <span class="bg-gray-800 text-white text-xs font-bold px-3 py-1.5 rounded uppercase tracking-wider">Out of Stock</span>
+                            </div>
+                            <img class="w-full h-full object-contain mix-blend-multiply grayscale" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/e7335f3260-457cca1561fae0264fa7.png" alt="Set of professional masonry drill bits in case" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-1">
+                                <div class="text-xs text-brand-muted">SKU: AC-MB-15PC</div>
+                            </div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2">15-Piece Masonry Drill Bit Set</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400 text-[10px]">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                                    </div>
+                                    <span class="text-[10px] text-brand-muted">(23)</span>
+                                </div>
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€24.50</span>
+                                </div>
+                                <button class="w-full bg-gray-200 text-gray-500 cursor-not-allowed text-sm font-medium py-2.5 rounded-lg flex items-center justify-center gap-2" disabled>
+                                    <i class="fa-solid fa-bell"></i> Notify Me
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Product Card 7 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/edaa6f8463-90defc4b51501898f7d8.png" alt="Large bag of Portland cement construction material" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-1">
+                                <div class="text-xs text-brand-muted">SKU: BM-CM-25KG</div>
+                            </div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">Portland Cement 42.5R - 25kg Bag</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400 text-[10px]">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <span class="text-[10px] text-brand-muted">(214)</span>
+                                </div>
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€6.20</span>
+                                    <span class="text-xs text-brand-muted mb-1">/ bag</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-20">
+                                        <input type="number" value="1" min="1" class="w-full text-center text-sm font-medium focus:outline-none py-2.5 bg-white">
+                                    </div>
+                                    <button class="flex-1 bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 8 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded z-10">-20%</span>
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/3bb2fc2ef4-7b7006cce53ef2a3b915.png" alt="Professional heavy duty pipe wrench tool" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-1">
+                                <div class="text-xs text-brand-muted">SKU: HT-PW-18</div>
+                            </div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">Heavy Duty Cast Iron Pipe Wrench 18"</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400 text-[10px]">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                                    </div>
+                                    <span class="text-[10px] text-brand-muted">(34)</span>
+                                </div>
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€28.00</span>
+                                    <span class="text-xs text-gray-400 line-through mb-1">€35.00</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cart-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-12 flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 pt-6 gap-4">
+                    <p class="text-sm text-brand-muted">Showing <span class="font-medium text-brand-text">1</span> to <span class="font-medium text-brand-text">24</span> of <span class="font-medium text-brand-text">1,248</span> results</p>
+                    <nav class="flex items-center gap-1">
+                        <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-brand-muted hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-navy text-white font-medium text-sm">1</button>
+                        <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-brand-text hover:bg-gray-50 font-medium text-sm transition-colors">2</button>
+                        <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-brand-text hover:bg-gray-50 font-medium text-sm transition-colors">3</button>
+                        <span class="w-10 h-10 flex items-center justify-center text-brand-muted">...</span>
+                        <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-brand-text hover:bg-gray-50 font-medium text-sm transition-colors">52</button>
+                        <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-brand-text hover:bg-gray-50 transition-colors">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (Consistent Shell) -->
+    <footer id="footer" class="bg-brand-navy text-white pt-12 pb-6 border-t-4 border-brand-orange">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-brand-orange rounded flex items-center justify-center font-bold text-sm">
+                            AG
+                        </div>
+                        <div class="font-bold text-lg">AgTradeGroup</div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Your trusted partner for plumbing, heating, and construction materials in Kosovo.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-brand-dark flex items-center justify-center hover:bg-brand-orange transition-colors"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-brand-dark flex items-center justify-center hover:bg-brand-orange transition-colors"><i class="fa-brands fa-instagram text-sm"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Delivery Info</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Categories</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Plumbing Supplies</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Heating Systems</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Professional Tools</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Building Materials</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot mt-1 text-brand-orange"></i>
+                            <span>Industrial Zone, Ferizaj<br>Kosovo 70000</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-brand-orange"></i>
+                            <span>+383 44 123 456</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-brand-orange"></i>
+                            <span>info@agtradegroup.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-6 border-t border-brand-dark flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+                <p>&copy; 2024 AgTradeGroup. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="#" class="fixed bottom-20 md:bottom-6 right-4 md:right-6 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center text-3xl shadow-lg hover:scale-110 transition-transform z-40">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Mobile Bottom Navigation (Visible only on small screens) -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50 px-6 py-3 flex justify-between items-center pb-safe">
+        <a href="#" class="flex flex-col items-center gap-1 text-brand-muted hover:text-brand-orange transition-colors">
+            <i class="fa-solid fa-house text-xl"></i>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a href="#" class="flex flex-col items-center gap-1 text-brand-orange transition-colors">
+            <i class="fa-solid fa-store text-xl"></i>
+            <span class="text-[10px] font-medium">Shop</span>
+        </a>
+        <a href="#" class="flex flex-col items-center gap-1 text-brand-muted hover:text-brand-orange transition-colors">
+            <i class="fa-regular fa-user text-xl"></i>
+            <span class="text-[10px] font-medium">Account</span>
+        </a>
+        <a href="#" class="flex flex-col items-center gap-1 text-brand-muted hover:text-brand-orange transition-colors relative">
+            <div class="relative">
+                <i class="fa-solid fa-cart-shopping text-xl"></i>
+                <span class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
+            </div>
+            <span class="text-[10px] font-medium">Cart</span>
+        </a>
+    </div>
+
+    <!-- Mobile Filters Bottom Sheet Overlay -->
+    <div id="mobile-filter-overlay" class="fixed inset-0 bg-black/50 z-[60] hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- Mobile Filters Bottom Sheet -->
+    <div id="mobile-filter-sheet" class="fixed bottom-0 left-0 w-full bg-white rounded-t-2xl z-[70] bottom-sheet max-h-[85vh] flex flex-col">
+        <div class="px-4 py-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white rounded-t-2xl z-10">
+            <h2 class="text-lg font-bold text-brand-navy">Filters</h2>
+            <button id="close-filter-btn" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-brand-navy hover:bg-gray-200">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+            <!-- Mobile Filter Content (Mirrors Desktop Sidebar) -->
+            <div>
+                <h3 class="font-bold text-brand-navy mb-4">Categories</h3>
+                <ul class="space-y-4 text-sm">
+                    <li>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox w-5 h-5">
+                            <span class="text-brand-text text-base">Plumbing Supplies</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox w-5 h-5" checked>
+                            <span class="text-brand-text text-base font-medium">Power Tools</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox w-5 h-5">
+                            <span class="text-brand-text text-base">Building Materials</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="border-t border-gray-200 pt-6">
+                <h3 class="font-bold text-brand-navy mb-4">Availability</h3>
+                <ul class="space-y-4 text-sm">
+                    <li>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox w-5 h-5" checked>
+                            <span class="text-brand-text text-base">In Stock</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-6">
+                <h3 class="font-bold text-brand-navy mb-4">Price Range</h3>
+                <div class="flex items-center gap-3">
+                    <div class="relative flex-1">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">€</span>
+                        <input type="number" placeholder="Min" class="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                    </div>
+                    <span class="text-gray-400">-</span>
+                    <div class="relative flex-1">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">€</span>
+                        <input type="number" placeholder="Max" class="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-200 bg-white sticky bottom-0 flex gap-3 pb-safe">
+            <button class="flex-1 py-3.5 border border-gray-300 text-brand-text font-medium rounded-lg bg-white">Reset</button>
+            <button class="flex-[2] py-3.5 bg-brand-navy text-white font-medium rounded-lg">Show Results (24)</button>
+        </div>
+    </div>
+
+    <script>
+        // Simple Mobile Filter Sheet Toggle
+        const filterBtn = document.getElementById('mobile-filter-btn');
+        const closeBtn = document.getElementById('close-filter-btn');
+        const overlay = document.getElementById('mobile-filter-overlay');
+        const sheet = document.getElementById('mobile-filter-sheet');
+
+        function toggleFilters() {
+            const isOpen = sheet.classList.contains('open');
+            if (isOpen) {
+                sheet.classList.remove('open');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = '';
+            } else {
+                overlay.classList.remove('hidden');
+                // slight delay to allow display block to apply before opacity transition
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    sheet.classList.add('open');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        if(filterBtn) filterBtn.addEventListener('click', toggleFilters);
+        if(closeBtn) closeBtn.addEventListener('click', toggleFilters);
+        if(overlay) overlay.addEventListener('click', toggleFilters);
+    </script>
+</body>
+</html>

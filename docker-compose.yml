@@ -1,0 +1,106 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: agt-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-agtradegroup}
+    # Ports only exposed internally via Docker network
+    expose:
+      - "5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-agtradegroup}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: agt-redis
+    restart: always
+    # Ports only exposed internally via Docker network
+    expose:
+      - "6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: agt-backend
+    restart: always
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${BACKEND_PORT:-3001}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-agtradegroup}?schema=public
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      FROM_EMAIL: ${FROM_EMAIL:-noreply@agtradegroup.com}
+      BASE_URL: ${BASE_URL:-http://localhost:3002}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3002,http://localhost:3000}
+      UPLOAD_DIR: /app/uploads
+      MAX_UPLOAD_SIZE: ${MAX_UPLOAD_SIZE:-5242880}
+      FREE_DELIVERY_CITY: ${FREE_DELIVERY_CITY:-Ferizaj}
+      STANDARD_DELIVERY_FEE: ${STANDARD_DELIVERY_FEE:-2}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      FACEBOOK_APP_ID: ${FACEBOOK_APP_ID:-}
+      FACEBOOK_APP_SECRET: ${FACEBOOK_APP_SECRET:-}
+      APPLE_CLIENT_ID: ${APPLE_CLIENT_ID:-}
+      APPLE_REDIRECT_URI: ${APPLE_REDIRECT_URI:-http://localhost:3002/account/login}
+    ports:
+      - "3001:3001"
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001/api/v1}
+        NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3002}
+        UPLOAD_PROXY_URL: http://backend:3001
+        NEXT_PUBLIC_WHATSAPP_NUMBER: ${NEXT_PUBLIC_WHATSAPP_NUMBER:-38344123456}
+        NEXT_PUBLIC_FREE_DELIVERY_CITY: ${NEXT_PUBLIC_FREE_DELIVERY_CITY:-Ferizaj}
+        NEXT_PUBLIC_DELIVERY_FEE: ${NEXT_PUBLIC_DELIVERY_FEE:-2}
+        NEXT_PUBLIC_CURRENCY: ${NEXT_PUBLIC_CURRENCY:-EUR}
+    container_name: agt-frontend
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001/api/v1}
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3002}
+      NEXT_PUBLIC_WHATSAPP_NUMBER: ${NEXT_PUBLIC_WHATSAPP_NUMBER:-38344123456}
+      NEXT_PUBLIC_FREE_DELIVERY_CITY: ${NEXT_PUBLIC_FREE_DELIVERY_CITY:-Ferizaj}
+      NEXT_PUBLIC_DELIVERY_FEE: ${NEXT_PUBLIC_DELIVERY_FEE:-2}
+      NEXT_PUBLIC_CURRENCY: ${NEXT_PUBLIC_CURRENCY:-EUR}
+    ports:
+      - "3002:3000"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
+  redis_data:
+  uploads:

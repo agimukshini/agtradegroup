@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        window.FontAwesomeConfig = {
+          autoReplaceSvg: 'nest'
+        };
+      </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AgTradeGroup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#1E3A5F',
+                            dark: '#152943',
+                            orange: '#F97316',
+                            orangeHover: '#EA580C',
+                            bg: '#F8FAFC',
+                            surface: '#FFFFFF',
+                            text: '#0F172A',
+                            muted: '#64748B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { margin: 0; padding: 0; background-color: #F8FAFC; }
+        .auth-card {
+            box-shadow: 0 10px 40px -10px rgba(30, 58, 95, 0.08);
+        }
+        /* Custom Checkbox */
+        .custom-checkbox {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 4px;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+        }
+        .custom-checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: white;
+            transform-origin: bottom left;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .custom-checkbox:checked {
+            background-color: #F97316;
+            border-color: #F97316;
+        }
+        .custom-checkbox:checked::before {
+            transform: scale(1);
+        }
+        
+        .tab-btn {
+            position: relative;
+        }
+        .tab-btn.active {
+            color: #1E3A5F;
+            font-weight: 600;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #F97316;
+            border-radius: 2px 2px 0 0;
+        }
+    </style>
+</head>
+<body class="font-sans text-brand-text bg-brand-bg min-h-screen flex flex-col">
+
+    <!-- Header (Consistent Shell) -->
+    <header id="header" class="bg-brand-navy text-white sticky top-0 z-50 shadow-md">
+        <!-- Top Bar -->
+        <div class="bg-brand-dark text-xs py-2 px-4 hidden md:block">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex gap-6">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-truck text-brand-orange"></i> Free Delivery in Ferizaj</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-phone text-brand-orange"></i> +383 44 123 456</span>
+                </div>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-brand-orange transition-colors">Support</a>
+                    <a href="#" class="hover:text-brand-orange transition-colors">Track Order</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Nav -->
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center gap-8">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2 flex-shrink-0">
+                    <div class="w-10 h-10 bg-brand-orange rounded-lg flex items-center justify-center font-bold text-xl">
+                        AG
+                    </div>
+                    <div>
+                        <div class="font-bold text-xl leading-tight tracking-tight">AgTradeGroup</div>
+                        <div class="text-[10px] text-gray-300 uppercase tracking-wider hidden sm:block">Plumbing & Construction</div>
+                    </div>
+                </a>
+
+                <!-- Desktop Search -->
+                <div class="hidden md:flex flex-1 max-w-2xl relative">
+                    <input type="text" placeholder="Search products, tools, materials..." 
+                           class="w-full h-11 pl-4 pr-12 rounded-lg text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-orange border-none">
+                    <button class="absolute right-0 top-0 h-11 w-12 text-brand-navy hover:text-brand-orange flex items-center justify-center rounded-r-lg">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Icons -->
+                <div class="flex items-center gap-5 sm:gap-6">
+                    <a href="#" class="flex flex-col items-center gap-1 text-brand-orange">
+                        <i class="fa-regular fa-user text-xl"></i>
+                        <span class="text-xs hidden sm:block font-medium">Account</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center gap-1 hover:text-brand-orange transition-colors relative">
+                        <div class="relative">
+                            <i class="fa-solid fa-cart-shopping text-xl"></i>
+                            <span class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                        </div>
+                        <span class="text-xs hidden sm:block">Cart</span>
+                    </a>
+                    <button class="md:hidden text-2xl hover:text-brand-orange">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="bg-white text-brand-text border-b border-gray-200 hidden md:block">
+            <div class="max-w-7xl mx-auto px-4">
+                <nav class="flex space-x-8">
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange flex items-center gap-2 border-b-2 border-transparent">
+                        <i class="fa-solid fa-bars"></i> All Categories
+                    </a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Plumbing</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Heating</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Tools</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Building Materials</a>
+                    <a href="#" class="py-3 text-sm font-medium text-red-600 hover:text-red-700 border-b-2 border-transparent ml-auto flex items-center gap-1">
+                        <i class="fa-solid fa-tag"></i> Offers
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative">
+        
+        <!-- Background decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-64 bg-brand-navy/5 -z-10"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-orange/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+        <div id="auth-wrapper" class="w-full max-w-[480px]">
+            
+            <!-- Auth Card -->
+            <div class="bg-white rounded-2xl auth-card overflow-hidden">
+                
+                <!-- Header/Tabs -->
+                <div class="px-8 pt-8 pb-4 border-b border-gray-100">
+                    <h1 class="text-2xl font-bold text-brand-navy mb-6 text-center">Welcome Back</h1>
+                    
+                    <div class="flex border-b border-gray-200 relative">
+                        <button class="flex-1 pb-3 text-center text-sm font-medium text-brand-muted hover:text-brand-navy transition-colors tab-btn active" id="tab-login" onclick="switchTab('login')">
+                            Sign In
+                        </button>
+                        <button class="flex-1 pb-3 text-center text-sm font-medium text-brand-muted hover:text-brand-navy transition-colors tab-btn" id="tab-register" onclick="switchTab('register')">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Forms Container -->
+                <div class="p-8">
+                    
+                    <!-- Login Form -->
+                    <form id="form-login" class="space-y-5 block">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-brand-navy mb-1.5">Email Address</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i class="fa-regular fa-envelope text-gray-400"></i>
+                                </div>
+                                <input type="email" id="email" 
+                                    class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg text-sm text-brand-text focus:ring-2 focus:ring-brand-navy focus:border-brand-navy transition-shadow bg-gray-50 focus:bg-white h-[48px]" 
+                                    placeholder="contractor@example.com">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-brand-navy mb-1.5">Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-lock text-gray-400"></i>
+                                </div>
+                                <input type="password" id="password" 
+                                    class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg text-sm text-brand-text focus:ring-2 focus:ring-brand-navy focus:border-brand-navy transition-shadow bg-gray-50 focus:bg-white h-[48px]" 
+                                    placeholder="••••••••">
+                                <button type="button" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-brand-navy focus:outline-none">
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="remember" class="custom-checkbox">
+                                <label for="remember" class="text-sm text-brand-muted cursor-pointer select-none">Remember me</label>
+                            </div>
+                            <a href="#" class="text-sm font-medium text-brand-navy hover:text-brand-orange transition-colors">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-orange hover:bg-brand-orangeHover text-white font-semibold py-3.5 px-4 rounded-lg shadow-sm transition-colors mt-6 h-[48px] flex justify-center items-center gap-2">
+                            Sign In <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </button>
+                        
+                        <div class="mt-6 pt-6 border-t border-gray-100 text-center">
+                            <p class="text-sm text-brand-muted mb-4">Quick checkout for new customers</p>
+                            <a href="#" class="inline-flex justify-center items-center w-full py-3 px-4 border border-gray-300 rounded-lg text-sm font-medium text-brand-navy bg-white hover:bg-gray-50 transition-colors h-[48px]">
+                                Continue as Guest
+                            </a>
+                        </div>
+                    </form>
+
+                    <!-- Register Form (Hidden by default) -->
+                    <form id="form-register" class="space-y-5 hidden">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="fname" class="block text-sm font-medium text-brand-navy mb-1.5">First Name</label>
+                                <input type="text" id="fname" 
+                                    class="block w-full px-3.5 py-3 border border-gray-300 rounded-lg text-sm text-brand-text focus:ring-2 focus:ring-brand-navy focus:border-brand-navy transition-shadow bg-gray-50 focus:bg-white h-[48px]" 
+                                    placeholder="John">
+                            </div>
+                            <div>
+                                <label for="lname" class="block text-sm font-medium text-brand-navy mb-1.5">Last Name</label>
+                                <input type="text" id="lname" 
+                                    class="block w-full px-3.5 py-3 border border-gray-300 rounded-lg text-sm text-brand-text focus:ring-2 focus:ring-brand-navy focus:border-brand-navy transition-shadow bg-gray-50 focus:bg-white h-[48px]" 
+                                    placeholder="Doe">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="reg-email" class="block text-sm font-medium text-brand-navy mb-1.5">Email Address</label>
+                            <input type="email" id="reg-email" 
+                                class="block w-full px-3.5 py-3 border border-gray-300 rounded-lg text-sm text-brand-text focus:ring-2 focus:ring-brand-navy focus:border-brand-navy transition-shadow bg-gray-50 focus:bg-white h-[48px]" 
+                                placeholder="john@company.com">
+                        </div>
+                        
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-brand-navy mb-1.5">Phone Number (Optional)</label>
+                            <input type="tel" id="phone" 
+                                class="block w-full px-3.5 py-3 border border-gray-300 rounded-lg text-sm text-brand-text focus:ring-2 focus:ring-brand-navy focus:border-brand-navy transition-shadow bg-gray-50 focus:bg-white h-[48px]" 
+                                placeholder="+383 4X XXX XXX">
+                        </div>
+
+                        <div>
+                            <label for="reg-password" class="block text-sm font-medium text-brand-navy mb-1.5">Create Password</label>
+                            <div class="relative">
+                                <input type="password" id="reg-password" 
+                                    class="block w-full pl-3.5 pr-10 py-3 border border-gray-300 rounded-lg text-sm text-brand-text focus:ring-2 focus:ring-brand-navy focus:border-brand-navy transition-shadow bg-gray-50 focus:bg-white h-[48px]" 
+                                    placeholder="Min. 8 characters">
+                                <button type="button" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-brand-navy focus:outline-none">
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                            <p class="text-xs text-brand-muted mt-1.5">Must include a number and special character.</p>
+                        </div>
+                        
+                        <!-- Contractor Toggle -->
+                        <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-start gap-3">
+                            <input type="checkbox" id="contractor" class="custom-checkbox mt-0.5">
+                            <div>
+                                <label for="contractor" class="text-sm font-medium text-brand-navy cursor-pointer">I am a professional contractor</label>
+                                <p class="text-xs text-brand-muted mt-0.5">Register for B2B pricing and faster checkout.</p>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-orange hover:bg-brand-orangeHover text-white font-semibold py-3.5 px-4 rounded-lg shadow-sm transition-colors mt-6 h-[48px]">
+                            Create Account
+                        </button>
+                        
+                        <p class="text-xs text-center text-brand-muted mt-4">
+                            By creating an account, you agree to our <a href="#" class="text-brand-navy underline hover:text-brand-orange">Terms of Service</a> and <a href="#" class="text-brand-navy underline hover:text-brand-orange">Privacy Policy</a>.
+                        </p>
+                    </form>
+
+                </div>
+            </div>
+            
+            <!-- Trust Indicators Below Card -->
+            <div class="mt-8 flex justify-center gap-6 text-brand-muted text-sm">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-brand-navy"></i> Secure Login
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-headset text-brand-navy"></i> 24/7 Support
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer (Consistent Shell) -->
+    <footer id="footer" class="bg-brand-navy text-white pt-12 pb-6 border-t-4 border-brand-orange">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-brand-orange rounded flex items-center justify-center font-bold text-sm">
+                            AG
+                        </div>
+                        <div class="font-bold text-lg">AgTradeGroup</div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Your trusted partner for plumbing, heating, and construction materials in Kosovo.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-brand-dark flex items-center justify-center hover:bg-brand-orange transition-colors"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-brand-dark flex items-center justify-center hover:bg-brand-orange transition-colors"><i class="fa-brands fa-instagram text-sm"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Delivery Info</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Categories</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Plumbing Supplies</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Heating Systems</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Professional Tools</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Building Materials</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot mt-1 text-brand-orange"></i>
+                            <span>Industrial Zone, Ferizaj<br>Kosovo 70000</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-brand-orange"></i>
+                            <span>+383 44 123 456</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-brand-orange"></i>
+                            <span>info@agtradegroup.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-6 border-t border-brand-dark flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+                <p>&copy; 2024 AgTradeGroup. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="#" class="fixed bottom-6 right-6 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center text-3xl shadow-lg hover:scale-110 transition-transform z-50">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        function switchTab(tab) {
+            const loginForm = document.getElementById('form-login');
+            const registerForm = document.getElementById('form-register');
+            const loginBtn = document.getElementById('tab-login');
+            const registerBtn = document.getElementById('tab-register');
+            const title = document.querySelector('h1');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                loginForm.classList.add('block');
+                registerForm.classList.remove('block');
+                registerForm.classList.add('hidden');
+                
+                loginBtn.classList.add('active');
+                registerBtn.classList.remove('active');
+                
+                title.textContent = 'Welcome Back';
+            } else {
+                registerForm.classList.remove('hidden');
+                registerForm.classList.add('block');
+                loginForm.classList.remove('block');
+                loginForm.classList.add('hidden');
+                
+                registerBtn.classList.add('active');
+                loginBtn.classList.remove('active');
+                
+                title.textContent = 'Create Account';
+            }
+        }
+    </script>
+</body>
+</html>

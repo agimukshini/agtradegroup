@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        window.FontAwesomeConfig = {
+          autoReplaceSvg: 'nest'
+        };
+      </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - AgTradeGroup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#1E3A5F',
+                            dark: '#152943',
+                            orange: '#F97316',
+                            orangeHover: '#EA580C',
+                            bg: '#F8FAFC',
+                            surface: '#FFFFFF',
+                            text: '#0F172A',
+                            muted: '#64748B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { margin: 0; padding: 0; background-color: #F8FAFC; }
+        .product-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Custom Checkbox */
+        .custom-checkbox {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.15em;
+            display: grid;
+            place-content: center;
+        }
+        .custom-checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em #1E3A5F;
+            background-color: #1E3A5F;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .custom-checkbox:checked::before {
+            transform: scale(1);
+        }
+        .custom-checkbox:checked {
+            border-color: #1E3A5F;
+        }
+        
+        /* Toast Animation */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .toast-enter { animation: slideInRight 0.3s ease-out forwards; }
+        .toast-exit { animation: fadeOut 0.3s ease-out forwards; }
+
+        /* Thumb gallery active state */
+        .thumb-active { border-color: #F97316 !important; opacity: 1 !important; }
+    </style>
+</head>
+<body class="font-sans text-brand-text bg-brand-bg min-h-screen flex flex-col m-0 p-0">
+
+    <!-- Header (Consistent Shell) -->
+    <header id="header" class="bg-brand-navy text-white sticky top-0 z-50 shadow-md">
+        <!-- Top Bar -->
+        <div class="bg-brand-dark text-xs py-2 px-4 hidden md:block">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex gap-6">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-truck text-brand-orange"></i> Free Delivery in Ferizaj</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-phone text-brand-orange"></i> +383 44 123 456</span>
+                </div>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-brand-orange transition-colors">Support</a>
+                    <a href="#" class="hover:text-brand-orange transition-colors">Track Order</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Nav -->
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center gap-8">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2 flex-shrink-0">
+                    <div class="w-10 h-10 bg-brand-orange rounded-lg flex items-center justify-center font-bold text-xl">
+                        AG
+                    </div>
+                    <div>
+                        <div class="font-bold text-xl leading-tight tracking-tight">AgTradeGroup</div>
+                        <div class="text-[10px] text-gray-300 uppercase tracking-wider hidden sm:block">Plumbing & Construction</div>
+                    </div>
+                </a>
+
+                <!-- Desktop Search -->
+                <div class="hidden md:flex flex-1 max-w-2xl relative">
+                    <input type="text" placeholder="Search products, tools, materials..." 
+                           class="w-full h-11 pl-4 pr-12 rounded-lg text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-orange border-none bg-white">
+                    <button class="absolute right-0 top-0 h-11 w-12 text-brand-navy hover:text-brand-orange flex items-center justify-center rounded-r-lg">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Icons -->
+                <div class="flex items-center gap-5 sm:gap-6">
+                    <a href="#" class="flex flex-col items-center gap-1 hover:text-brand-orange transition-colors relative">
+                        <i class="fa-solid fa-house text-xl"></i>
+                        <span class="text-xs hidden sm:block font-medium">Home</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center gap-1 text-brand-orange transition-colors relative">
+                        <i class="fa-solid fa-store text-xl"></i>
+                        <span class="text-xs hidden sm:block font-medium">Shop</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center gap-1 hover:text-brand-orange transition-colors relative">
+                        <i class="fa-regular fa-user text-xl"></i>
+                        <span class="text-xs hidden sm:block font-medium">Account</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center gap-1 hover:text-brand-orange transition-colors relative">
+                        <div class="relative">
+                            <i class="fa-solid fa-cart-shopping text-xl"></i>
+                            <span class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center" id="cart-badge">3</span>
+                        </div>
+                        <span class="text-xs hidden sm:block font-medium">Cart</span>
+                    </a>
+                    <button class="md:hidden text-2xl hover:text-brand-orange">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="bg-white text-brand-text border-b border-gray-200 hidden md:block">
+            <div class="max-w-7xl mx-auto px-4">
+                <nav class="flex space-x-8">
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange flex items-center gap-2 border-b-2 border-transparent">
+                        <i class="fa-solid fa-bars"></i> All Categories
+                    </a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Plumbing</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Heating</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Tools</a>
+                    <a href="#" class="py-3 text-sm font-medium hover:text-brand-orange border-b-2 border-transparent">Building Materials</a>
+                    <a href="#" class="py-3 text-sm font-medium text-red-600 hover:text-red-700 border-b-2 border-transparent ml-auto flex items-center gap-1">
+                        <i class="fa-solid fa-tag"></i> Offers
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Mobile Search -->
+        <div class="md:hidden p-3 bg-brand-navy border-t border-brand-dark">
+             <div class="relative w-full">
+                <input type="text" placeholder="Search products..." 
+                       class="w-full h-10 pl-4 pr-10 rounded-lg text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-orange border-none bg-white text-sm">
+                <button class="absolute right-0 top-0 h-10 w-10 text-brand-navy flex items-center justify-center rounded-r-lg">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full pb-28 md:pb-12">
+        
+        <!-- Breadcrumbs -->
+        <div class="bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 py-4">
+                <nav class="flex text-sm text-brand-muted" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3 overflow-x-auto whitespace-nowrap hide-scroll">
+                        <li class="inline-flex items-center">
+                            <a href="#" class="hover:text-brand-orange flex items-center gap-1">
+                                <i class="fa-solid fa-house text-xs"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <i class="fa-solid fa-chevron-right text-[10px] mx-1"></i>
+                                <a href="#" class="hover:text-brand-orange ml-1 md:ml-2">Tools</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <i class="fa-solid fa-chevron-right text-[10px] mx-1"></i>
+                                <a href="#" class="hover:text-brand-orange ml-1 md:ml-2">Power Tools</a>
+                            </div>
+                        </li>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <i class="fa-solid fa-chevron-right text-[10px] mx-1"></i>
+                                <span class="text-brand-navy font-medium ml-1 md:ml-2 truncate max-w-[150px] sm:max-w-none">Pro-Grade 18V Brushless Combi Drill Set</span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            
+            <!-- Product Top Section -->
+            <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 mb-12">
+                
+                <!-- Image Gallery -->
+                <div class="w-full lg:w-1/2 flex flex-col gap-4">
+                    <!-- Main Image Area -->
+                    <div class="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square bg-white border border-gray-200 rounded-2xl p-4 md:p-8 flex items-center justify-center overflow-hidden">
+                        <!-- Badges -->
+                        <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                            <span class="bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded uppercase tracking-wider">-15% OFF</span>
+                            <span class="bg-brand-orange text-white text-xs font-bold px-3 py-1.5 rounded uppercase tracking-wider">Bestseller</span>
+                        </div>
+                        
+                        <!-- Main Image -->
+                        <img class="w-full h-full object-contain mix-blend-multiply" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/66e2f3e830-b4d120eda5b6673b5513.png" alt="Professional heavy duty yellow and black combi drill with battery, sharp lighting, industrial look" />
+                        
+                        <!-- Zoom Hint -->
+                        <button class="absolute bottom-4 right-4 w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-brand-navy hover:text-brand-orange shadow-sm transition-colors">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i>
+                        </button>
+                    </div>
+
+                    <!-- Thumbnails -->
+                    <div class="flex gap-3 overflow-x-auto hide-scroll pb-2">
+                        <button class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-white border-2 border-brand-orange rounded-xl p-2 thumb-active transition-all">
+                            <img class="w-full h-full object-contain mix-blend-multiply" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/f07481f4c4-1f3a7abe7975370ed3bd.png" alt="Professional heavy duty yellow and black combi drill side profile" />
+                        </button>
+                        <button class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-white border border-gray-200 rounded-xl p-2 opacity-60 hover:opacity-100 transition-all">
+                            <img class="w-full h-full object-contain mix-blend-multiply" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/e69f66b4e7-1b632fb4b11d1f0724cf.png" alt="Professional heavy duty yellow and black combi drill close up on chuck" />
+                        </button>
+                        <button class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-white border border-gray-200 rounded-xl p-2 opacity-60 hover:opacity-100 transition-all">
+                            <img class="w-full h-full object-contain mix-blend-multiply" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/861b0b4881-92eb5ae604403571add8.png" alt="Professional heavy duty yellow and black combi drill battery pack isolated" />
+                        </button>
+                        <button class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-white border border-gray-200 rounded-xl p-2 opacity-60 hover:opacity-100 transition-all">
+                            <img class="w-full h-full object-contain mix-blend-multiply" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/dbc16b30d8-0764f9e49d668b496b05.png" alt="Professional heavy duty yellow and black combi drill hard carrying case" />
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Info & Purchase Block -->
+                <div class="w-full lg:w-1/2 flex flex-col">
+                    
+                    <!-- Header Info -->
+                    <div class="mb-6 border-b border-gray-200 pb-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-2">
+                            <span class="text-sm text-brand-muted font-medium">SKU: DW-18V-BD</span>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-yellow-100 text-[#F59E0B] text-xs font-bold px-2 py-1 rounded flex items-center gap-1 border border-yellow-200">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Low Stock (Only 4 left)
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-navy mb-4 leading-tight">Pro-Grade 18V Brushless Combi Drill Set with 2x 5.0Ah Batteries</h1>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-1">
+                                <div class="flex text-yellow-400 text-sm">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                                </div>
+                                <a href="#reviews" class="text-sm text-brand-muted hover:text-brand-orange underline ml-1">42 Reviews</a>
+                            </div>
+                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                            <span class="text-sm text-brand-navy font-medium"><i class="fa-brands fa-deval text-brand-orange mr-1"></i> DeWalt</span>
+                        </div>
+                    </div>
+
+                    <!-- Pricing -->
+                    <div class="mb-6">
+                        <div class="flex items-end gap-3 mb-2">
+                            <span class="text-4xl md:text-5xl font-bold text-brand-navy">€149.99</span>
+                            <div class="flex flex-col mb-1">
+                                <span class="text-sm text-gray-400 line-through">€176.45</span>
+                                <span class="text-xs text-brand-muted">excl. VAT</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-brand-muted">Volume pricing available for contractors. <a href="#" class="text-brand-orange hover:underline font-medium">Log in to view.</a></p>
+                    </div>
+
+                    <!-- Delivery & Stock Status -->
+                    <div class="bg-brand-bg border border-gray-200 rounded-xl p-4 mb-8 space-y-3">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-truck text-brand-navy mt-1"></i>
+                            <div>
+                                <span class="block text-sm font-bold text-brand-navy">Free Delivery to Ferizaj</span>
+                                <span class="block text-xs text-brand-muted">Order within 2 hrs 15 mins for delivery tomorrow.</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 pt-3 border-t border-gray-200">
+                            <i class="fa-solid fa-shop text-brand-navy mt-1"></i>
+                            <div>
+                                <span class="block text-sm font-bold text-brand-navy">Click & Collect</span>
+                                <span class="block text-xs text-brand-muted">Available at Ferizaj Main Depot (Ready in 30 mins)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Purchase Controls (Desktop) -->
+                    <div class="hidden md:flex flex-col gap-4 mb-8">
+                        <div class="flex items-center gap-4">
+                            <!-- Quantity -->
+                            <div class="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden h-14 w-32 bg-white">
+                                <button class="w-10 h-full flex items-center justify-center text-brand-navy hover:bg-gray-50 transition-colors" onclick="updateQty(-1)">
+                                    <i class="fa-solid fa-minus text-sm"></i>
+                                </button>
+                                <input type="number" id="qty-input" value="1" min="1" max="4" class="w-full h-full text-center text-lg font-bold text-brand-navy focus:outline-none bg-transparent appearance-none m-0">
+                                <button class="w-10 h-full flex items-center justify-center text-brand-navy hover:bg-gray-50 transition-colors" onclick="updateQty(1)">
+                                    <i class="fa-solid fa-plus text-sm"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Add to Cart -->
+                            <button id="add-to-cart-btn" class="flex-1 h-14 bg-brand-orange hover:bg-brand-orangeHover text-white text-lg font-bold rounded-xl transition-colors shadow-lg shadow-orange-500/30 flex items-center justify-center gap-3">
+                                <i class="fa-solid fa-cart-shopping"></i> Add to Cart
+                            </button>
+                        </div>
+                        
+                        <!-- Quick Reorder Hint (Contractor Focus) -->
+                        <div class="flex items-center justify-between bg-[#152943]/5 border border-brand-navy/10 rounded-lg px-4 py-3">
+                            <div class="flex items-center gap-2 text-sm text-brand-navy">
+                                <i class="fa-solid fa-clock-rotate-left text-brand-orange"></i>
+                                <span>You last bought this on <strong>12 Oct 2023</strong></span>
+                            </div>
+                            <button class="text-sm font-bold text-brand-orange hover:text-brand-orangeHover">Buy Again</button>
+                        </div>
+                    </div>
+
+                    <!-- Short Description -->
+                    <div class="prose prose-sm text-brand-muted mb-6">
+                        <p>Professional grade 18V XR Li-Ion compact combi drill featuring brushless motor technology for excellent efficiency. Ultra-compact, lightweight design allows use in confined spaces.</p>
+                        <ul class="mt-2 space-y-1">
+                            <li><i class="fa-solid fa-check text-green-500 mr-2 text-xs"></i> Brushless Motor for extended runtime</li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2 text-xs"></i> 2 Speed all-metal transmission</li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2 text-xs"></i> Includes 2x 5.0Ah XR Li-Ion batteries & charger</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tabs Section -->
+            <div class="mb-16">
+                <div class="border-b border-gray-200 flex overflow-x-auto hide-scroll">
+                    <button class="py-4 px-6 text-sm font-bold text-brand-orange border-b-2 border-brand-orange whitespace-nowrap">Technical Specs</button>
+                    <button class="py-4 px-6 text-sm font-medium text-brand-muted hover:text-brand-navy border-b-2 border-transparent whitespace-nowrap transition-colors">Description</button>
+                    <button class="py-4 px-6 text-sm font-medium text-brand-muted hover:text-brand-navy border-b-2 border-transparent whitespace-nowrap transition-colors">Downloads & Manuals</button>
+                    <button class="py-4 px-6 text-sm font-medium text-brand-muted hover:text-brand-navy border-b-2 border-transparent whitespace-nowrap transition-colors">Reviews (42)</button>
+                </div>
+                
+                <!-- Specs Table -->
+                <div class="py-8">
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden max-w-4xl">
+                        <table class="w-full text-sm text-left">
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50 w-1/3">Power Supply</th>
+                                    <td class="px-6 py-4 text-brand-text">Cordless</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50">Voltage</th>
+                                    <td class="px-6 py-4 text-brand-text">18V</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50">Battery Capacity</th>
+                                    <td class="px-6 py-4 text-brand-text">5.0Ah</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50">Battery Type</th>
+                                    <td class="px-6 py-4 text-brand-text">Lithium-Ion (Li-Ion)</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50">Max Torque (Hard/Soft)</th>
+                                    <td class="px-6 py-4 text-brand-text">70 Nm / 27 Nm</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50">No Load Speed</th>
+                                    <td class="px-6 py-4 text-brand-text">0-550/2000 rpm</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50">Chuck Capacity</th>
+                                    <td class="px-6 py-4 text-brand-text">1.5 - 13 mm</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50">Max. Drilling Capacity [Wood]</th>
+                                    <td class="px-6 py-4 text-brand-text">40 mm</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <th class="px-6 py-4 font-medium text-brand-navy bg-brand-bg/50">Weight (incl. battery)</th>
+                                    <td class="px-6 py-4 text-brand-text">1.8 kg</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="mb-8">
+                <div class="flex justify-between items-end mb-6">
+                    <h2 class="text-2xl font-bold text-brand-navy">Frequently Bought Together</h2>
+                    <a href="#" class="text-sm font-medium text-brand-orange hover:text-brand-orangeHover hidden sm:block">View all related</a>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                    
+                    <!-- Related Product 1 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/deb0456db6-dfb7e643a586349d0b62.png" alt="Set of professional masonry drill bits in case" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="text-xs text-brand-muted mb-1">SKU: AC-MB-15PC</div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">15-Piece Masonry Drill Bit Set</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€24.50</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Product 2 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/36116555a7-5390aa7bbcbdf11e09b7.png" alt="Yellow 18V 5.0Ah replacement lithium ion battery pack" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="text-xs text-brand-muted mb-1">SKU: DW-BAT-5AH</div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">18V XR 5.0Ah Li-Ion Battery Pack</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€69.00</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Related Product 3 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c2f36522f9-71aedc89a07427a0a917.png" alt="Professional heavy duty angle grinder power tool, industrial grade" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="text-xs text-brand-muted mb-1">SKU: PT-AG-115</div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">115mm Professional Angle Grinder 900W</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€54.90</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Product 4 -->
+                    <div class="bg-white border border-gray-100 rounded-xl p-4 product-card flex flex-col">
+                        <div class="relative mb-4 aspect-square bg-brand-bg rounded-lg p-4 flex items-center justify-center group overflow-hidden">
+                            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded z-10">-10%</span>
+                            <span class="absolute top-2 right-2 text-green-500 bg-white rounded-full p-1 shadow-sm text-[10px] z-10" title="In Stock">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </span>
+                            <img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/0988d81e35-beee48443bbb95171be0.png" alt="Professional protective safety goggles and work gloves set" />
+                        </div>
+                        <div class="flex-1 flex flex-col">
+                            <div class="text-xs text-brand-muted mb-1">SKU: SF-PPE-SET</div>
+                            <h3 class="font-medium text-brand-navy text-sm leading-tight mb-2 line-clamp-2 hover:text-brand-orange cursor-pointer">Contractor Safety Goggles & Gloves Set</h3>
+                            <div class="mt-auto">
+                                <div class="flex items-end gap-2 mb-4">
+                                    <span class="text-lg font-bold text-brand-navy">€18.00</span>
+                                    <span class="text-xs text-gray-400 line-through mb-1">€20.00</span>
+                                </div>
+                                <button class="w-full bg-brand-navy hover:bg-brand-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer (Consistent Shell) -->
+    <footer id="footer" class="bg-brand-navy text-white pt-12 pb-24 md:pb-6 border-t-4 border-brand-orange">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-brand-orange rounded flex items-center justify-center font-bold text-sm">
+                            AG
+                        </div>
+                        <div class="font-bold text-lg">AgTradeGroup</div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Your trusted partner for plumbing, heating, and construction materials in Kosovo.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-brand-dark flex items-center justify-center hover:bg-brand-orange transition-colors"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-brand-dark flex items-center justify-center hover:bg-brand-orange transition-colors"><i class="fa-brands fa-instagram text-sm"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Delivery Info</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Categories</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Plumbing Supplies</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Heating Systems</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Professional Tools</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition-colors">Building Materials</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot mt-1 text-brand-orange"></i>
+                            <span>Industrial Zone, Ferizaj<br>Kosovo 70000</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-brand-orange"></i>
+                            <span>+383 44 123 456</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-brand-orange"></i>
+                            <span>info@agtradegroup.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-6 border-t border-brand-dark flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+                <p>&copy; 2024 AgTradeGroup. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="#" class="fixed bottom-24 md:bottom-6 right-4 md:right-6 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center text-3xl shadow-lg hover:scale-110 transition-transform z-40">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Mobile Sticky Add to Cart Bar -->
+    <div class="md:hidden fixed bottom-[60px] left-0 w-full bg-white border-t border-gray-200 z-40 p-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe">
+        <div class="flex items-center gap-3">
+            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-12 w-24 bg-white flex-shrink-0">
+                <button class="w-8 h-full flex items-center justify-center text-brand-navy hover:bg-gray-50" onclick="updateQtyMobile(-1)">
+                    <i class="fa-solid fa-minus text-xs"></i>
+                </button>
+                <input type="number" id="qty-input-mobile" value="1" min="1" max="4" class="w-full h-full text-center font-bold text-brand-navy focus:outline-none bg-transparent appearance-none m-0 text-sm">
+                <button class="w-8 h-full flex items-center justify-center text-brand-navy hover:bg-gray-50" onclick="updateQtyMobile(1)">
+                    <i class="fa-solid fa-plus text-xs"></i>
+                </button>
+            </div>
+            <button id="add-to-cart-btn-mobile" class="flex-1 h-12 bg-brand-orange hover:bg-brand-orangeHover text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm">
+                <i class="fa-solid fa-cart-shopping"></i> Add - €149.99
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation (Consistent Shell) -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50 px-6 py-3 flex justify-between items-center pb-safe">
+        <a href="#" class="flex flex-col items-center gap-1 text-brand-muted hover:text-brand-orange transition-colors">
+            <i class="fa-solid fa-house text-xl"></i>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a href="#" class="flex flex-col items-center gap-1 text-brand-orange transition-colors">
+            <i class="fa-solid fa-store text-xl"></i>
+            <span class="text-[10px] font-medium">Shop</span>
+        </a>
+        <a href="#" class="flex flex-col items-center gap-1 text-brand-muted hover:text-brand-orange transition-colors">
+            <i class="fa-regular fa-user text-xl"></i>
+            <span class="text-[10px] font-medium">Account</span>
+        </a>
+        <a href="#" class="flex flex-col items-center gap-1 text-brand-muted hover:text-brand-orange transition-colors relative">
+            <div class="relative">
+                <i class="fa-solid fa-cart-shopping text-xl"></i>
+                <span class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center" id="cart-badge-mobile">3</span>
+            </div>
+            <span class="text-[10px] font-medium">Cart</span>
+        </a>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-20 right-4 z-[100] flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        // Quantity Controls
+        const maxStock = 4;
+        
+        function updateQty(change) {
+            const input = document.getElementById('qty-input');
+            let newVal = parseInt(input.value) + change;
+            if(newVal >= 1 && newVal <= maxStock) {
+                input.value = newVal;
+                document.getElementById('qty-input-mobile').value = newVal;
+            } else if (newVal > maxStock) {
+                showToast(`Only ${maxStock} items available in stock.`, 'error');
+            }
+        }
+        
+        function updateQtyMobile(change) {
+            const input = document.getElementById('qty-input-mobile');
+            let newVal = parseInt(input.value) + change;
+            if(newVal >= 1 && newVal <= maxStock) {
+                input.value = newVal;
+                document.getElementById('qty-input').value = newVal;
+            } else if (newVal > maxStock) {
+                showToast(`Only ${maxStock} items available in stock.`, 'error');
+            }
+        }
+
+        // Add to Cart Simulation & Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const isSuccess = type === 'success';
+            const icon = isSuccess ? '<i class="fa-solid fa-circle-check text-green-500 text-xl"></i>' : '<i class="fa-solid fa-circle-exclamation text-red-500 text-xl"></i>';
+            const borderColor = isSuccess ? 'border-green-500' : 'border-red-500';
+            
+            toast.className = `bg-white border-l-4 ${borderColor} shadow-lg rounded-r-lg p-4 flex items-center gap-3 w-80 pointer-events-auto toast-enter`;
+            toast.innerHTML = `
+                ${icon}
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-brand-navy">${isSuccess ? 'Added to Cart' : 'Error'}</p>
+                    <p class="text-xs text-brand-muted">${message}</p>
+                </div>
+                <button class="text-gray-400 hover:text-gray-600" onclick="this.parentElement.remove()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Update badges if success
+            if(isSuccess) {
+                const badges = [document.getElementById('cart-badge'), document.getElementById('cart-badge-mobile')];
+                badges.forEach(badge => {
+                    if(badge) {
+                        badge.innerText = parseInt(badge.innerText) + parseInt(document.getElementById('qty-input').value);
+                        badge.classList.add('scale-125', 'transition-transform');
+                        setTimeout(() => badge.classList.remove('scale-125'), 200);
+                    }
+                });
+            }
+            
+            setTimeout(() => {
+                toast.classList.replace('toast-enter', 'toast-exit');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+            const qty = document.getElementById('qty-input').value;
+            showToast(`${qty}x Pro-Grade 18V Brushless Combi Drill Set added.`);
+        });
+        
+        document.getElementById('add-to-cart-btn-mobile').addEventListener('click', () => {
+            const qty = document.getElementById('qty-input-mobile').value;
+            showToast(`${qty}x Pro-Grade 18V Brushless Combi Drill Set added.`);
+        });
+    </script>
+</body>
+</html>
